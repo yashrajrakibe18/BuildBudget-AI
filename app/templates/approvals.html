@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block heading %}Approval Centre{% endblock %}
+{% block subheading %}<div class="sub">Human-in-the-loop control. Approved actions execute once, and only once.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <button class="btn btn-ghost btn-sm" type="button" data-filter="">All</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-filter="pending">Pending</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-filter="approved">Approved</button>
+    <button class="btn btn-ghost btn-sm" type="button" data-filter="rejected">Rejected</button>
+  </div>
+{% endblock %}
+{% block content %}
+<div class="grid grid-kpi" id="approval-summary">
+  <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+</div>
+<div style="display:flex;align-items:center;gap:10px;margin:18px 0 10px">
+  <h2 style="margin:0">Requests</h2><span class="badge" id="approval-count">—</span>
+</div>
+<div id="approval-host">
+  <div class="card"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/approvals.js" defer></script>{% endblock %}

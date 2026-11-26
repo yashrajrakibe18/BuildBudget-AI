@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block heading %}My Projects{% endblock %}
+{% block subheading %}<div class="sub">Create, filter and open a full project workspace.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <button class="btn btn-ghost btn-sm" type="button" id="view-cards" aria-pressed="true">Cards</button>
+    <button class="btn btn-ghost btn-sm" type="button" id="view-table" aria-pressed="false">Table</button>
+    <button class="btn btn-accent btn-sm" type="button" id="new-project"><i data-lucide="plus" class="ico"></i> New project</button>
+  </div>
+{% endblock %}
+{% block safety %}{% endblock %}
+
+{% block content %}
+<div class="card" style="padding:12px 14px">
+  <div class="form-row">
+    <div class="field" style="flex:2 1 220px">
+      <label for="p-q">Search</label>
+      <input id="p-q" type="search" placeholder="Project name or location">
+    </div>
+    <div class="field" style="flex:1 1 150px">
+      <label for="p-status">Status</label>
+      <select id="p-status">
+        <option value="">Any status</option>
+        {% for key, text in PROJECT_STATUS.items() if key != 'archived' %}<option value="{{ key }}">{{ text }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="field" style="flex:1 1 170px">
+      <label for="p-type">Project type</label>
+      <select id="p-type">
+        <option value="">Any type</option>
+        {% for key, text in PROJECT_TYPES.items() %}<option value="{{ key }}">{{ text }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="field" style="flex:0 1 170px">
+      <label for="p-sort">Sort by</label>
+      <select id="p-sort">
+        <option value="recent">Newest first</option>
+        <option value="name">Name (A–Z)</option>
+        <option value="budget">Largest budget</option>
+        <option value="utilisation">Highest utilisation</option>
+        <option value="progress">Least progress</option>
+      </select>
+    </div>
+    <label class="check" style="margin-bottom:6px"><input type="checkbox" id="p-archived"> Show archived</label>
+  </div>
+</div>
+
+<div id="projects-host" style="margin-top:16px">
+  <div class="grid grid-3">
+    <div class="skeleton skeleton-card" style="height:150px"></div>
+    <div class="skeleton skeleton-card" style="height:150px"></div>
+    <div class="skeleton skeleton-card" style="height:150px"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/projects.js" defer></script>{% endblock %}

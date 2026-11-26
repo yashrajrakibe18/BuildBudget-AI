@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block heading %}Automations{% endblock %}
+{% block subheading %}<div class="sub">Rules that draft or send project mail. External sending is always explicitly authorised.</div>{% endblock %}
+{% block actions %}
+  <button class="btn btn-accent btn-sm" type="button" id="auto-new"><i data-lucide="plus" class="ico"></i> New rule</button>
+{% endblock %}
+{% block content %}
+<div class="insight info" style="margin-bottom:14px">
+  <i data-lucide="info" class="ico"></i>
+  <div><b>How automatic mail works</b>
+  <span>Each rule is evaluated by the scheduler. With “require approval” on (the default), a draft and an approval
+  request are created — nothing is emailed until a person approves it. Deduplication prevents the same unchanged
+  condition alerting twice.</span></div>
+</div>
+<div id="auto-host">
+  <div class="card"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/automations.js" defer></script>{% endblock %}

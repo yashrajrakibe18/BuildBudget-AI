@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block heading %}Analytics{% endblock %}
+{% block subheading %}<div class="sub">Trend, forecast, anomalies and risk — with the limits of the data stated plainly.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <select id="an-project" aria-label="Project" style="max-width:220px">
+      <option value="">All projects</option>
+      {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+    </select>
+    <select id="an-months" aria-label="History window">
+      <option value="6">6 months</option><option value="12" selected>12 months</option><option value="24">24 months</option>
+    </select>
+  </div>
+{% endblock %}
+{% block content %}
+<div class="grid grid-kpi" id="an-kpis">
+  <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+</div>
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h2>Monthly expenditure and forecast</h2><div class="spacer"></div>
+    <span class="small muted" id="an-trend-note"></span></div>
+  <div class="chart-box tall"><canvas id="an-series"></canvas></div>
+  <div id="an-trend" style="margin-top:12px"></div>
+</div>
+<div class="grid grid-2" style="margin-top:16px">
+  <div class="card"><div class="card-head"><h3>Expense forecast</h3></div><div id="an-forecast"></div></div>
+  <div class="card"><div class="card-head"><h3>Unusual expenses</h3></div><div id="an-anomalies"></div></div>
+</div>
+<div class="grid grid-2" style="margin-top:16px">
+  <div class="card"><div class="card-head"><h3>Budget overrun risk</h3></div><div id="an-risk"></div></div>
+  <div class="card"><div class="card-head"><h3>Project health</h3></div><div id="an-health"></div></div>
+</div>
+<div class="grid grid-2" style="margin-top:16px">
+  <div class="card"><div class="card-head"><h3>Material consumption</h3></div><div id="an-consumption"></div></div>
+  <div class="card"><div class="card-head"><h3>Supplier performance</h3></div><div id="an-suppliers"></div></div>
+</div>
+<div class="card" style="margin-top:16px"><div class="card-head"><h3>Methods and limitations</h3></div>
+  <ul class="small muted" id="an-methods" style="margin:0 0 0 16px;padding:0"></ul>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/analytics.js" defer></script>{% endblock %}

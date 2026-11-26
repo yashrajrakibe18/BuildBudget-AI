@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block heading %}Mail Centre{% endblock %}
+{% block subheading %}<div class="sub">Drafts, approvals, scheduled and sent mail. Nothing leaves without your approval.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <button class="btn btn-ghost btn-sm" type="button" id="mail-test">Test connection</button>
+    <button class="btn btn-accent btn-sm" type="button" id="mail-compose"><i data-lucide="pen-line" class="ico"></i> Compose</button>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div id="mail-status" class="card" style="margin-bottom:14px">
+  <div class="skeleton skeleton-line" style="width:40%"></div>
+</div>
+<div class="mail-shell">
+  <aside class="mail-folders" id="mail-folders" aria-label="Mail folders"></aside>
+  <div class="mail-list" id="mail-list"></div>
+  <div class="mail-view" id="mail-view">
+    <p class="small muted">Select a message, or compose a new one.</p>
+  </div>
+</div>
+<p class="small muted" style="margin-top:12px">Gmail API mailbox sync requires OAuth 2.0 and is not implemented in this
+build; SMTP sending is. No inbox is shown unless a provider has delivered mail into this application.</p>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/mail.js" defer></script>{% endblock %}

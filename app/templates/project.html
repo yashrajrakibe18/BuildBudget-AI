@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block crumbs %}<a href="/projects">Projects</a><span class="sep">/</span><strong>{{ project_name }}</strong>{% endblock %}
+{% block heading %}{{ project_name }}{% endblock %}
+{% block subheading %}<div class="sub" id="project-sub">Loading project position…</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <a class="btn btn-ghost btn-sm" id="project-ai" href="/assistant?project={{ pid }}"><i data-lucide="sparkles" class="ico"></i> Ask AI</a>
+    <button class="btn btn-ghost btn-sm" type="button" id="project-edit">Edit project</button>
+    <button class="btn btn-ghost btn-sm" type="button" id="project-archive">Archive</button>
+  </div>
+{% endblock %}
+{% block safety %}{% endblock %}
+
+{% block content %}
+<div class="tabs" id="project-tabs" role="tablist" aria-label="Project sections">
+  {% set tabs = [
+    ('overview','Overview','layout-dashboard'), ('planning','Planning','ruler'),
+    ('estimator','Estimator','calculator'), ('boq','BOQ','list-checks'),
+    ('budget','Budget & Expenses','wallet'), ('inventory','Inventory','package'),
+    ('procurement','Procurement','clipboard-list'), ('labour','Labour','hard-hat'),
+    ('schedule','Schedule','calendar-range'), ('documents','Documents','files'),
+    ('reports','Reports','file-text'), ('activity','Activity','history') ] %}
+  {% for key, label, icon in tabs %}
+  <button class="tab {% if initial_tab == key %}on{% endif %}" data-tab="{{ key }}" role="tab"
+          aria-selected="{{ 'true' if initial_tab == key else 'false' }}">
+    <i data-lucide="{{ icon }}" class="ico" style="width:14px;height:14px;vertical-align:-2px;margin-right:3px"></i>{{ label }}
+  </button>
+  {% endfor %}
+</div>
+<div id="project-host" data-pid="{{ pid }}" data-tab="{{ initial_tab }}">
+  <div class="grid grid-kpi">
+    <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+    <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/pages/project-modules.js" defer></script>
+<script src="/static/js/pages/project.js" defer></script>
+{% endblock %}

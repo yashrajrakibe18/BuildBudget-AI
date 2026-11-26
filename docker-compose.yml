@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16
+    environment: {POSTGRES_USER: bb, POSTGRES_PASSWORD: change-me, POSTGRES_DB: buildbudget}
+    volumes: [pgdata:/var/lib/postgresql/data]
+  web:
+    build: .
+    env_file: .env
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg://bb:change-me@db:5432/buildbudget   # add psycopg to your image to use PostgreSQL
+    ports: ["8000:8000"]
+    depends_on: [db]
+  scheduler:           # exactly ONE instance - avoids duplicate emails
+    build: .
+    env_file: .env
+    command: python scripts/run_scheduler.py
+    depends_on: [db]
+volumes: {pgdata: {}}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block heading %}Activity Logs{% endblock %}
+{% block subheading %}<div class="sub">Who changed what, and when. Every sensitive action is recorded.</div>{% endblock %}
+{% block actions %}
+  <button class="btn btn-ghost btn-sm" type="button" id="act-export">Export CSV</button>
+{% endblock %}
+{% block content %}
+<div class="card" style="padding:12px 14px">
+  <div class="form-row">
+    <div class="field" style="flex:1 1 200px"><label for="act-project">Project</label>
+      <select id="act-project"><option value="">All my activity</option>
+        {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}</select></div>
+    <div class="field" style="flex:1 1 180px"><label for="act-action">Action contains</label>
+      <input id="act-action" type="search" placeholder="e.g. approval, email, boq"></div>
+    <div class="field" style="flex:0 1 130px"><label for="act-limit">Rows</label>
+      <select id="act-limit"><option>50</option><option selected>100</option><option>200</option><option>500</option></select></div>
+    <button class="btn btn-sm" type="button" id="act-apply">Apply</button>
+  </div>
+</div>
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h2>Audit trail</h2><div class="spacer"></div><span class="small muted" id="act-count">—</span></div>
+  <div id="act-host"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/activity.js" defer></script>{% endblock %}

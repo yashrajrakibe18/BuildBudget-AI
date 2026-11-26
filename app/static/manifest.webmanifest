@@ -1,0 +1,24 @@
+{
+  "name": "BuildBudget AI — Construction Intelligence",
+  "short_name": "BuildBudget",
+  "description": "Construction planning, estimation, procurement, budgets and an assistant grounded in your project records.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5F7FA",
+  "theme_color": "#142139",
+  "icons": [
+    {
+      "src": "/static/img/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/img/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

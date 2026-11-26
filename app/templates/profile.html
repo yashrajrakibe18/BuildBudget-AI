@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block heading %}Profile{% endblock %}
+{% block subheading %}<div class="sub">Your account, role permissions and password.</div>{% endblock %}
+{% block content %}
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><h2>Account details</h2></div>
+    <form id="profile-form">
+      <div class="form-grid">
+        <div class="field"><label for="prof-name">Full name</label><input id="prof-name" type="text" required></div>
+        <div class="field"><label for="prof-email">Email address</label><input id="prof-email" type="email" required></div>
+      </div>
+      <label class="check" style="margin-top:12px"><input type="checkbox" id="prof-notify"> Send me email alerts when configured</label>
+      <div class="btn-group" style="margin-top:14px"><button class="btn btn-accent btn-sm" type="submit">Save details</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Role and permissions</h2></div>
+    <div id="profile-role"><div class="skeleton skeleton-line" style="width:50%"></div></div>
+    <div class="btn-group" style="margin-top:14px">
+      <a class="btn btn-ghost btn-sm" href="/settings">Preferences</a>
+      <button class="btn btn-ghost btn-sm" type="button" id="profile-logout">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h2>Change password</h2></div>
+  <form id="password-form">
+    <div class="form-grid">
+      <div class="field"><label for="pw-current">Current password</label>
+        <div class="pw-toggle"><input id="pw-current" type="password" autocomplete="current-password" required>
+          <button type="button" data-toggle-pw="pw-current">Show</button></div></div>
+      <div class="field"><label for="pw-new">New password</label>
+        <div class="pw-toggle"><input id="pw-new" type="password" autocomplete="new-password" minlength="8" required>
+          <button type="button" data-toggle-pw="pw-new">Show</button></div>
+        <div class="pw-meter" id="pw-meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+      <div class="field"><label for="pw-confirm">Confirm new password</label>
+        <input id="pw-confirm" type="password" autocomplete="new-password" required></div>
+    </div>
+    <div class="btn-group" style="margin-top:12px"><button class="btn btn-accent btn-sm" type="submit">Update password</button></div>
+    <p class="small muted" style="margin:10px 0 0">Use at least 8 characters. Common passwords are rejected by the server.</p>
+  </form>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h3>Session</h3></div>
+  <div id="profile-session" class="small muted">Loading session details…</div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/profile.js" defer></script>{% endblock %}

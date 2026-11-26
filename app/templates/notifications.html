@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block heading %}Notifications{% endblock %}
+{% block subheading %}<div class="sub">Budget, stock, schedule and approval alerts. In-app delivery works even when email is off.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <button class="btn btn-ghost btn-sm" type="button" id="notif-checks">Run checks now</button>
+    <button class="btn btn-ghost btn-sm" type="button" id="notif-read">Mark all read</button>
+  </div>
+{% endblock %}
+{% block content %}
+<div class="card" style="padding:12px 14px">
+  <div class="form-row">
+    <label class="check"><input type="checkbox" id="notif-unread"> Unread only</label>
+    <div class="field" style="flex:1 1 200px"><label for="notif-kind">Category</label>
+      <select id="notif-kind">
+        <option value="">All categories</option>
+        <option value="budget">Budget Alert</option>
+        <option value="inventory">Low Stock</option>
+        <option value="deadline">Overdue Activity</option>
+        <option value="approval">Approval Request</option>
+        <option value="email">Email Update</option>
+        <option value="email_failed">Email Failed</option>
+        <option value="automation">Automation</option>
+        <option value="weather">Weather Advisory</option>
+        <option value="quotation">Supplier Quotation</option>
+        <option value="report">Report Ready</option>
+        <option value="system">System</option>
+      </select></div>
+    <div class="field" style="flex:0 1 190px"><label for="notif-project">Project</label>
+      <select id="notif-project"><option value="">All projects</option>
+        {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+      </select></div>
+    <label class="check" style="margin-bottom:6px"><input type="checkbox" id="notif-archived"> Include archived</label>
+  </div>
+</div>
+<div style="display:flex;align-items:center;gap:10px;margin:16px 0 10px">
+  <h2 style="margin:0">Inbox</h2><span class="badge" id="notif-count">—</span>
+  <span class="small muted" id="notif-live">Live updates enabled</span>
+</div>
+<div class="notif-list" id="notif-list">
+  <div class="card"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/notifications.js" defer></script>{% endblock %}

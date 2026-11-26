@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · {{ app_name }}</title>
+  <script src="/static/js/theme.js"></script>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="auth-page">
+  <section class="auth-visual">
+    <a class="brand" href="/login" style="text-decoration:none">
+      <span class="brand-mark">BB</span>
+      <span class="brand-text"><span class="brand-name">BuildBudget AI</span>
+      <span class="brand-sub">Construction Intelligence</span></span>
+    </a>
+    <div>
+      <h2>Plan, price and deliver construction work with confidence.</h2>
+      <p>Measurements, BOQs, budgets, procurement and schedules in one workspace — with an assistant that
+      uses your real project data and asks before it acts.</p>
+      <ul class="auth-points">
+        <li><i data-lucide="ruler" class="ico"></i><span>Deterministic quantity take-offs for finishes and non-structural work</span></li>
+        <li><i data-lucide="wallet" class="ico"></i><span>Budget, expense and supplier tracking grounded in recorded data</span></li>
+        <li><i data-lucide="shield-check" class="ico"></i><span>Human approval before any external email or data change</span></li>
+      </ul>
+    </div>
+    <p class="auth-note">Preliminary planning only. Structural work requires engineer-approved quantities.
+    BuildBudget AI never invents prices, quotations or forecasts.</p>
+  </section>
+
+  <section class="auth-form">
+    <div class="auth-card">
+      <div class="brand" style="margin-bottom:20px">
+        <span class="brand-mark">BB</span>
+        <span class="brand-text"><span class="brand-name">{{ app_name }}</span>
+        <span class="brand-sub">Construction Intelligence</span></span>
+      </div>
+      <h1>Welcome back</h1>
+      <p class="lead">Sign in to continue to your projects.</p>
+      <div id="auth-alert" class="alert error hidden" role="alert"></div>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="pw-toggle">
+            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Your password">
+            <button type="button" data-pw-toggle="password" aria-label="Show password">Show</button>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px">
+          <label class="check"><input type="checkbox" name="remember"> Keep me signed in</label>
+          <a href="/reset-password" class="small">Forgot password?</a>
+        </div>
+        <button class="btn btn-accent btn-block" type="submit" id="login-submit">Sign in</button>
+      </form>
+      <p class="auth-alt">New to BuildBudget AI? <a href="/register">Create an account</a></p>
+      {% if demo_mode %}
+      <div class="demo-box">
+        <b>Demo mode</b> — demonstration projects are labelled. Create your own account for a clean workspace.
+      </div>
+      {% endif %}
+      <p class="small muted" style="margin-top:14px">Preliminary planning tool. Not a structural engineering service.</p>
+    </div>
+  </section>
+</div>
+<div class="toasts" id="toasts"></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.454.0/dist/umd/lucide.min.js" defer></script>
+<script src="/static/js/ui.js" defer></script>
+<script src="/static/js/pages/auth.js" defer></script>
+</body>
+</html>

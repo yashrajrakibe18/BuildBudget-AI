@@ -1,0 +1,128 @@
+{# BuildBudget AI application shell. No inline scripts or handlers: CSP allows only /static files. #}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf" content="{{ csrf }}">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#142139">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/img/icon.svg">
+  <title>{{ title }} · {{ app_name }}</title>
+  <script src="/static/js/theme.js"></script>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body data-page="{{ page }}">
+<div class="shell" data-collapsed="false" data-mobile-open="false">
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <a class="brand" href="/dashboard" aria-label="BuildBudget AI home">
+        <span class="brand-mark">BB</span>
+        <span class="brand-text">
+          <span class="brand-name">BuildBudget AI</span>
+          <span class="brand-sub">Construction Intelligence</span>
+        </span>
+      </a>
+    </div>
+    <nav class="nav">
+      {% for group, items in nav %}
+      <div class="nav-group">
+        <div class="nav-group-title">{{ group }}</div>
+        {% for href, label, icon in items %}
+        {% set active = (request.url.path == href) or (page == 'project' and href == '/projects') %}
+        <a class="nav-link {% if active %}on{% endif %}" href="{{ href }}" {% if active %}aria-current="page"{% endif %}>
+          <i data-lucide="{{ icon }}" class="ico"></i>
+          <span class="nav-label">{{ label }}</span>
+          {% if href == '/approvals' and pending_approvals %}
+          <span class="count" title="{{ pending_approvals }} pending">{{ pending_approvals }}</span>
+          {% elif href == '/notifications' and unread_count %}
+          <span class="count" title="{{ unread_count }} unread">{{ unread_count }}</span>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </nav>
+    <div class="sidebar-foot">
+      <div>{{ app_name }} v{{ version }}</div>
+      <div class="pill">{{ environment|capitalize }}{% if demo_mode %} · demo data on{% endif %}</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn" id="sidebar-toggle" type="button" aria-label="Toggle navigation">
+        <i data-lucide="menu" class="ico"></i>
+      </button>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/dashboard">Home</a>
+        <span class="sep">/</span>
+        {% block crumbs %}<strong>{{ title }}</strong>{% endblock %}
+      </nav>
+      <div class="topbar-spacer"></div>
+      <div class="searchbox">
+        <i data-lucide="search" class="ico"></i>
+        <input id="global-search" type="search" placeholder="Search projects, suppliers, documents…"
+               aria-label="Global search" autocomplete="off">
+      </div>
+      {% if switcher_projects %}
+      <div class="switcher">
+        <label class="sr-only" for="project-switcher" style="position:absolute;left:-9999px">Active project</label>
+        <select id="project-switcher" aria-label="Active project">
+          <option value="">All projects</option>
+          {% for p in switcher_projects %}
+          <option value="{{ p.id }}" {% if pid is defined and pid == p.id %}selected{% endif %}>{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      <div style="position:relative">
+        <button class="icon-btn" id="bell" type="button" aria-label="Notifications">
+          <i data-lucide="bell" class="ico"></i>
+          <span class="dot {% if not unread_count %}hidden{% endif %}" id="bell-count">{{ unread_count }}</span>
+        </button>
+      </div>
+      <div style="position:relative">
+        <button class="icon-btn" id="theme-menu" type="button" aria-label="Appearance">
+          <i data-lucide="sun-moon" class="ico"></i>
+        </button>
+      </div>
+      <div style="position:relative">
+        <button class="icon-btn" id="profile-menu" type="button" aria-label="Your account" style="width:auto;padding:0 4px">
+          <span class="avatar">{{ (user.name or user.email)[:2]|upper }}</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="main">
+      <div class="page-head">
+        <div class="titles">
+          <h1>{% block heading %}{{ title }}{% endblock %}</h1>
+          {% block subheading %}{% endblock %}
+        </div>
+        <div class="page-actions">{% block actions %}{% endblock %}</div>
+      </div>
+
+      {% block safety %}{% endblock %}
+
+      <div id="page-root">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.454.0/dist/umd/lucide.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" defer></script>
+<script src="/static/js/ui.js" defer></script>
+<script src="/static/js/app.js" defer></script>
+<script src="/static/js/pwa.js" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

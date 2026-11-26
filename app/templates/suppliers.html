@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block heading %}Suppliers & Prices{% endblock %}
+{% block subheading %}<div class="sub">Your supplier directory, quotation prices and delivered-cost comparisons.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <select id="sup-project" aria-label="Project for orders" style="max-width:210px">
+      <option value="">Project for orders</option>
+      {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-accent btn-sm" type="button" id="sup-add"><i data-lucide="plus" class="ico"></i> Add supplier</button>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="subtabs" id="sup-tabs">
+  <button type="button" data-tab="directory" class="on">Supplier directory</button>
+  <button type="button" data-tab="prices">Price database</button>
+  <button type="button" data-tab="quotations">Quotations</button>
+  <button type="button" data-tab="compare">Comparison</button>
+  <button type="button" data-tab="catalogue">Material catalogue</button>
+  <button type="button" data-tab="requests">Purchase requests</button>
+  <button type="button" data-tab="orders">Purchase orders</button>
+  <button type="button" data-tab="deliveries">Deliveries</button>
+</div>
+
+<div id="sup-host">
+  <div class="card"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/suppliers.js" defer></script>{% endblock %}

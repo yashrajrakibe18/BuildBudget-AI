@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block heading %}AI Assistant{% endblock %}
+{% block subheading %}<div class="sub">Works with your real project records. It asks before changing data or sending email.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <span class="badge" id="assistant-status">Checking model…</span>
+    <button class="btn btn-ghost btn-sm" type="button" id="assistant-side-toggle" style="display:none">Chats</button>
+  </div>
+{% endblock %}
+{% block safety %}{% endblock %}
+
+{% block content %}
+<div id="assistant-setup" class="card hidden" style="margin-bottom:14px"></div>
+<div class="chat-shell" id="chat-shell">
+  <aside class="chat-side" aria-label="Conversations">
+    <div class="chat-side-head">
+      <button class="btn btn-accent btn-sm btn-block" type="button" id="new-chat">
+        <i data-lucide="plus" class="ico"></i> New chat
+      </button>
+      <input id="chat-search" type="search" placeholder="Search conversations" aria-label="Search conversations">
+    </div>
+    <div class="chat-list" id="chat-list"></div>
+    <div class="sidebar-foot" style="border-top:1px solid var(--border);color:var(--muted)">
+      <span id="chat-count">0 conversations</span>
+    </div>
+  </aside>
+
+  <section class="chat-main">
+    <div class="chat-top">
+      <div style="min-width:0;flex:1">
+        <strong id="chat-title" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">New chat</strong>
+        <span class="small muted" id="chat-context">No project selected</span>
+      </div>
+      <label class="sr-only" for="chat-project" style="position:absolute;left:-9999px">Project context</label>
+      <select id="chat-project" aria-label="Project context" style="max-width:200px">
+        <option value="">No project</option>
+        {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+      </select>
+      <button class="icon-btn" type="button" id="chat-pin" aria-label="Pin conversation" title="Pin conversation">
+        <i data-lucide="pin" class="ico"></i>
+      </button>
+      <button class="icon-btn" type="button" id="chat-delete" aria-label="Delete conversation" title="Delete conversation">
+        <i data-lucide="trash-2" class="ico"></i>
+      </button>
+    </div>
+
+    <div class="chat-stream" id="chat-stream" aria-live="polite">
+      <div class="welcome" id="chat-welcome">
+        <div class="mark">BB</div>
+        <h1>What are we building today?</h1>
+        <p>Ask about a project, calculate quantities, compare supplier quotations, draft a BOQ or prepare an email.
+        Anything that changes data or sends mail becomes an approval request.</p>
+        <div class="prompt-grid" id="prompt-grid">
+          <button type="button" class="prompt-card" data-prompt="I want to renovate a 12 × 15 feet room. I need new floor tiles and wall painting. Help me plan everything, including quantities and a preliminary budget.">
+            <b>Plan a room renovation</b>Measure, estimate tiles and paint, then draft a BOQ and budget.</button>
+          <button type="button" class="prompt-card" data-prompt="Show me the budget position of my projects and highlight anything over 75% utilisation.">
+            <b>Check budget health</b>Uses your recorded expenses and approved budgets.</button>
+          <button type="button" class="prompt-card" data-prompt="Which materials are below their reorder level, and what should I purchase?">
+            <b>Review site stock</b>Low-stock materials and purchase requirements.</button>
+          <button type="button" class="prompt-card" data-prompt="Search my construction knowledge base for tile wastage guidance and summarise it with sources.">
+            <b>Ask the knowledge base</b>Hybrid retrieval with source passages.</button>
+        </div>
+        <p class="small muted" style="margin-top:18px">The assistant never invents prices, quotations, citations or
+        successful actions. If a price is missing it will ask you for it.</p>
+      </div>
+      <div id="chat-messages"></div>
+      <div id="chat-live" class="hidden"></div>
+    </div>
+
+    <div class="composer">
+      <form id="composer-form">
+        <div class="composer-box">
+          <textarea id="composer-input" rows="1" placeholder="Ask about a project, a quantity, a supplier or an email…"
+                    aria-label="Message" maxlength="6000"></textarea>
+          <div class="composer-tools">
+            <button class="icon-btn" type="button" id="composer-attach" title="Attach a document" aria-label="Attach a document">
+              <i data-lucide="paperclip" class="ico"></i>
+            </button>
+            <span class="context-chip" id="context-chip"><i data-lucide="folder" class="ico" style="width:12px;height:12px"></i> General</span>
+            <div class="spacer"></div>
+            <button class="btn btn-ghost btn-sm hidden" type="button" id="composer-stop">Stop</button>
+            <button class="btn btn-accent btn-sm" type="submit" id="composer-send">
+              <i data-lucide="send" class="ico"></i> Send
+            </button>
+          </div>
+        </div>
+        <div id="composer-attachment" class="small muted hidden" style="padding:0 6px 6px"></div>
+        <input type="file" id="composer-file" style="display:none"
+               accept=".pdf,.docx,.txt,.md,.csv,.xlsx" aria-hidden="true" tabindex="-1">
+        <div class="composer-hint">
+          <span>Enter to send · Shift + Enter for a new line</span>
+          <span>Operational steps are shown; hidden model reasoning is not.</span>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/assistant.js" defer></script>{% endblock %}

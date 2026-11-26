@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block heading %}Settings{% endblock %}
+{% block subheading %}<div class="sub">Preferences, integration status and data management. Secret values are never displayed.</div>{% endblock %}
+{% block content %}
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><h2>Preferences</h2></div>
+    <form id="settings-form">
+      <div class="form-grid">
+        <div class="field"><label for="set-theme">Theme</label>
+          <select id="set-theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+        <div class="field"><label for="set-units">Measurement units</label>
+          <select id="set-units"><option value="imperial">Imperial (feet, inches)</option><option value="metric">Metric (metres, cm)</option></select></div>
+        <div class="field"><label for="set-currency">Currency</label>
+          <select id="set-currency"><option value="INR">INR — Indian rupee</option><option value="USD">USD — US dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — Pound</option><option value="AED">AED — Dirham</option></select></div>
+        <div class="field"><label for="set-timezone">Time zone</label>
+          <input id="set-timezone" type="text" value="Asia/Kolkata" placeholder="Asia/Kolkata"></div>
+      </div>
+      <label class="check" style="margin-top:12px"><input type="checkbox" id="set-notify"> Email me important alerts (when email is configured)</label>
+      <div class="btn-group" style="margin-top:14px"><button class="btn btn-accent btn-sm" type="submit">Save preferences</button>
+        <a class="btn btn-ghost btn-sm" href="/profile">Account and password</a></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Integrations</h2><div class="spacer"></div>
+      <button class="btn btn-ghost btn-sm" type="button" id="set-refresh">Refresh status</button></div>
+    <div id="integrations"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h2>Diagnostics</h2></div>
+  <div class="btn-group">
+    <button class="btn btn-ghost btn-sm" type="button" id="test-llm">Test language model</button>
+    <button class="btn btn-ghost btn-sm" type="button" id="test-mail">Test SMTP connection</button>
+    <a class="btn btn-ghost btn-sm" href="/health" target="_blank" rel="noopener">Health endpoint</a>
+  </div>
+  <div id="diagnostics" style="margin-top:10px"></div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h2>Data and backups</h2></div>
+  <div id="data-info" class="small"></div>
+  <ul class="small muted" style="margin:10px 0 0 16px;padding:0">
+    <li>SQLite: stop the app and copy <code>buildbudget.db</code> before an upgrade.</li>
+    <li>PostgreSQL: use <code>pg_dump</code> and keep the dump outside the project folder.</li>
+    <li>Migrations are additive and never drop user records; take a backup anyway.</li>
+    <li>Demonstration records are labelled and can be reset separately from real projects.</li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/settings.js" defer></script>{% endblock %}

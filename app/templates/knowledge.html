@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block heading %}Knowledge Base{% endblock %}
+{% block subheading %}<div class="sub">Your construction references, indexed for hybrid retrieval with citations.</div>{% endblock %}
+{% block actions %}
+  <button class="btn btn-ghost btn-sm" type="button" id="kb-refresh">Refresh</button>
+  <button class="btn btn-accent btn-sm" type="button" id="kb-upload-toggle"><i data-lucide="upload" class="ico"></i> Upload document</button>
+{% endblock %}
+{% block content %}
+<div class="grid grid-kpi" id="kb-stats">
+  <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+</div>
+
+<div class="card" id="kb-upload-card" style="margin-top:16px;display:none">
+  <div class="card-head"><h2>Upload and index</h2><div class="spacer"></div>
+    <button class="icon-btn" type="button" id="kb-upload-close" aria-label="Close upload"><i data-lucide="x" class="ico"></i></button></div>
+  <form id="kb-form">
+    <div id="kb-drop" style="border:2px dashed var(--border-strong);border-radius:12px;padding:22px;text-align:center;color:var(--muted);margin-bottom:12px">
+      <i data-lucide="upload-cloud" class="ico" style="width:26px;height:26px"></i>
+      <div><strong>Drop a file here</strong> or choose one below</div>
+      <div class="small">PDF, DOCX, TXT, Markdown, CSV — max 20 MB</div>
+      <input id="kb-file" type="file" accept=".pdf,.docx,.txt,.md,.csv" style="margin-top:10px">
+    </div>
+    <div class="form-grid">
+      <div class="field"><label for="kb-category">Category</label>
+        <select id="kb-category">{% for key, text in DOCUMENT_CATEGORIES.items() %}<option value="{{ key }}">{{ text }}</option>{% endfor %}</select></div>
+      <div class="field"><label for="kb-version">Version</label><input id="kb-version" type="text" value="1"></div>
+      <div class="field"><label for="kb-project">Project (optional)</label>
+        <select id="kb-project"><option value="">Shared across my projects</option>
+          {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}</select></div>
+      <div class="field"><label for="kb-source">Source URL (optional)</label><input id="kb-source" type="url" placeholder="https://…"></div>
+      <div class="field"><label for="kb-published">Published on (optional)</label><input id="kb-published" type="date"></div>
+      <div class="field"><label for="kb-scope">Applicable location (optional)</label><input id="kb-scope" type="text" placeholder="e.g. Maharashtra"></div>
+    </div>
+    <div class="progress" style="margin-top:12px"><span id="kb-progress" style="width:0"></span></div>
+    <div class="btn-group" style="margin-top:10px"><button class="btn btn-accent btn-sm" type="submit" id="kb-submit">Upload & index</button>
+      <span class="small muted" id="kb-upload-note">Nothing is indexed until the upload completes.</span></div>
+  </form>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="card-head"><h2>Search knowledge</h2><div class="spacer"></div>
+    <span class="small muted">Hybrid BM25 + vector, reciprocal rank fusion</span></div>
+  <form id="kb-search-form" class="form-row">
+    <div class="field" style="flex:3 1 260px"><label for="kb-q">Question or keywords</label>
+      <input id="kb-q" type="search" placeholder="e.g. tile wastage allowance for 600×600 vitrified tiles"></div>
+    <div class="field" style="flex:1 1 150px"><label for="kb-search-project">Project scope</label>
+      <select id="kb-search-project"><option value="">All my documents</option>
+        {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}</select></div>
+    <button class="btn" type="submit">Search</button>
+  </form>
+  <div id="kb-results" style="margin-top:14px">
+    <p class="small muted">Retrieved passages appear here with their source document, section and page where available.</p>
+  </div>
+</div>
+
+<div style="display:flex;align-items:center;gap:10px;margin:18px 0 10px">
+  <h2 style="margin:0">Documents</h2><span class="badge" id="kb-doc-count">—</span>
+</div>
+<div id="kb-docs"><div class="card"><div class="skeleton skeleton-row"></div><div class="skeleton skeleton-row"></div></div></div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/knowledge.js" defer></script>{% endblock %}

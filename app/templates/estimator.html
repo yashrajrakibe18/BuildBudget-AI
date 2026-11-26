@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block heading %}Cost Estimator{% endblock %}
+{% block subheading %}<div class="sub">Deterministic quantities from your measurements. You control every rate and wastage assumption.</div>{% endblock %}
+{% block actions %}
+  <div class="btn-group">
+    <select id="est-project" aria-label="Project for saving" style="max-width:220px">
+      <option value="">No project selected</option>
+      {% for p in switcher_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+    </select>
+    <a class="btn btn-ghost btn-sm" href="/suppliers">Price database</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="grid grid-side">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><h2>Room measurements</h2><div class="spacer"></div>
+        <button class="btn btn-sm" type="button" id="calc-room">Calculate areas</button></div>
+      <div class="form-grid">
+        <div class="field"><label for="room-length">Length</label><input id="room-length" type="number" step="0.01" min="0" value="12"></div>
+        <div class="field"><label for="room-width">Width</label><input id="room-width" type="number" step="0.01" min="0" value="15"></div>
+        <div class="field"><label for="room-height">Height</label><input id="room-height" type="number" step="0.01" min="0" value="10"></div>
+        <div class="field"><label for="room-unit">Unit</label>
+          <select id="room-unit"><option value="ft">Feet</option><option value="m">Metres</option>
+          <option value="in">Inches</option><option value="cm">Centimetres</option></select></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 4px"><strong class="small">Door / window openings</strong>
+        <div style="flex:1"></div><button class="btn btn-ghost btn-sm" type="button" id="est-add-opening">Add opening</button></div>
+      <div id="est-openings"></div>
+      <p class="small muted" style="margin:8px 0 0">Openings are subtracted from the gross wall area before paint or plaster.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Material calculator</h2></div>
+      <div class="subtabs" id="est-kinds">
+        <button type="button" data-kind="tiles" class="on">Tiles</button>
+        <button type="button" data-kind="paint">Paint</button>
+        <button type="button" data-kind="primer">Primer</button>
+        <button type="button" data-kind="plaster">Plaster</button>
+        <button type="button" data-kind="bricks">Brickwork</button>
+        <button type="button" data-kind="tile_adhesive">Tile adhesive</button>
+      </div>
+      <form id="est-form"></form>
+      <div class="btn-group" style="margin-top:12px">
+        <button class="btn" type="button" id="est-calculate">Calculate quantity</button>
+        <button class="btn btn-ghost" type="button" id="est-save" disabled>Save scenario</button>
+        <button class="btn btn-ghost" type="button" id="est-to-boq" disabled>Add to BOQ</button>
+      </div>
+    </div>
+
+    <div class="card" id="est-result-card" style="display:none">
+      <div class="card-head"><h2>Result</h2><div class="spacer"></div><span class="badge info" id="est-item"></span></div>
+      <div id="est-result"></div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><h3>Room areas</h3><div class="spacer"></div><span class="small muted" id="room-source">Not calculated</span></div>
+      <div id="room-areas"><p class="small muted">Enter the room dimensions and calculate to see floor, ceiling and wall areas.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Unit converter</h3></div>
+      <div class="form-grid">
+        <div class="field"><label for="conv-value">Value</label><input id="conv-value" type="number" step="any" value="1"></div>
+        <div class="field"><label for="conv-from">From</label>
+          <select id="conv-from"><option value="ft">Feet</option><option value="m">Metres</option><option value="in">Inches</option>
+          <option value="sqft">Sq ft</option><option value="sqm">Sq m</option><option value="cft">Cu ft</option><option value="cum">Cu m</option></select></div>
+        <div class="field"><label for="conv-to">To</label>
+          <select id="conv-to"><option value="m">Metres</option><option value="ft">Feet</option><option value="in">Inches</option>
+          <option value="sqm">Sq m</option><option value="sqft">Sq ft</option><option value="cum">Cu m</option><option value="cft">Cu ft</option></select></div>
+      </div>
+      <button class="btn btn-ghost btn-sm" type="button" id="conv-run" style="margin-top:8px">Convert</button>
+      <p class="small" id="conv-result" style="margin:8px 0 0"></p>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>How this works</h3></div>
+      <ul class="small muted" style="margin:0 0 0 16px;padding:0">
+        <li>Quantities are calculated in Python — the assistant cannot change them.</li>
+        <li>Wastage is your allowance for cuts and breakage.</li>
+        <li>Coverage rates (paint, adhesive) must come from a datasheet; they are never guessed.</li>
+        <li>Structural work (foundations, RCC, load-bearing walls) is deliberately excluded.</li>
+        <li>Rates are never invented: leave the unit rate blank to use a stored quotation, or the item is rejected.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Project</h3></div>
+      <div id="est-project-card"><p class="small muted">Select a project above to save scenarios or add items to its BOQ.</p></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/pages/estimator.js" defer></script>{% endblock %}

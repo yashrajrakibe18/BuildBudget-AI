@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} · {{ app_name }}</title>
+  <script src="/static/js/theme.js"></script>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<main class="content" style="max-width:640px;padding-top:12vh">
+  <div class="card" style="text-align:center;padding:36px 28px">
+    <div class="brand-mark" style="margin:0 auto 16px;width:46px;height:46px;font-size:17px">BB</div>
+    <p class="muted small" style="letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px">Error {{ code }}</p>
+    <h1 style="font-size:26px">{{ title }}</h1>
+    <p class="muted" style="margin:8px 0 22px">{{ message }}</p>
+    <div class="btn-group" style="justify-content:center">
+      {% if auth %}<a class="btn" href="/dashboard">Back to dashboard</a>
+      {% else %}<a class="btn" href="/login">Sign in</a>{% endif %}
+      <a class="btn btn-ghost" href="/">Home</a>
+    </div>
+    <p class="small muted" style="margin-top:20px">If this keeps happening, check the server logs. No technical
+    details are shown here on purpose.</p>
+  </div>
+</main>
+</body>
+</html>
